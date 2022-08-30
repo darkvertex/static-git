@@ -1,0 +1,37 @@
+
+name: Compile Git Release
+
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      FORCE_COLOR: 1
+    steps:
+    - uses: actions/checkout@v3
+    - name: Download earthly
+      run: "sudo /bin/sh -c 'wget https://github.com/earthly/earthly/releases/download/v0.6.22/earthly-linux-amd64 -O /usr/local/bin/earthly && chmod +x /usr/local/bin/earthly'"
+    - name: Compile upstream git release
+      run: earthly --use-inline-cache --save-inline-cache --strict +build --GIT_VERSION=${{github.ref_name}}
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: git
+        path: ./dist/*
+        if-no-files-found: error
+    - name: Compress the binaries
+      run: cd dist && tar -czvf ../git-binaries.linux-64bit.tar.gz *
+    - name: Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "git-binaries.linux-64bit.tar.gz"
+        allowUpdates: true
+        removeArtifacts: true
+        artifactErrorsFailBuild: true
+        body: statically compiled git v${{github.ref_name}} from https://github.com/git/git/releases/tag/v${{github.ref_name}}
