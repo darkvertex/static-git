@@ -20,7 +20,7 @@ jobs:
     - name: Compile upstream git release
       run: earthly --use-inline-cache --save-inline-cache --strict +build --GIT_VERSION=${{github.ref_name}}
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: git
         path: ./dist/*
