@@ -4,6 +4,7 @@ FROM alpine
 
 RUN apk add --no-cache \
     curl autoconf gcc flex bison make bash cmake libtool musl-dev g++ \
+    linux-headers \
     zlib-dev zlib-static \
     tcl tk \
     tcl-dev gettext
