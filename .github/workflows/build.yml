@@ -13,10 +13,11 @@ jobs:
       contents: write
     env:
       FORCE_COLOR: 1
+      EARTHLY_DISABLE_ANALYTICS: 1
     steps:
     - uses: actions/checkout@v3
     - name: Download earthly
-      run: "sudo /bin/sh -c 'wget https://github.com/earthly/earthly/releases/download/v0.6.22/earthly-linux-amd64 -O /usr/local/bin/earthly && chmod +x /usr/local/bin/earthly'"
+      run: "sudo /bin/sh -c 'wget https://github.com/earthly/earthly/releases/download/v0.8.16/earthly-linux-amd64 -O /usr/local/bin/earthly && chmod +x /usr/local/bin/earthly'"
     - name: Compile upstream git release
       run: earthly --use-inline-cache --save-inline-cache --strict +build --GIT_VERSION=${{github.ref_name}}
     - name: Upload build artifacts
