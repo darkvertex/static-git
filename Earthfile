@@ -7,7 +7,8 @@ RUN apk add --no-cache \
     linux-headers \
     zlib-dev zlib-static \
     tcl tk \
-    tcl-dev gettext
+    tcl-dev gettext \
+    cargo rust
 
 ARG GIT_VERSION
 
